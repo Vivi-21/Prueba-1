@@ -1,0 +1,58 @@
+#include <LiquidCrystal.h> //Librería LCD
+//LCD
+LiquidCrystal lcd (13, 12, 11, 10, 9, 8); // RS,E,D4,D5,D6,D7
+String vocales; // almacena el mensaje en morse completo
+int longitud;
+String temp; //almacena partes temporales
+String A = "a";
+String E = "e";
+String I = "i";
+String O = "o";
+String U = "u";
+String pos1,pos2,pos3,pos4,pos5;
+
+void setup() {
+  Serial.begin(9600);
+  attachInterrupt(digitalPinToInterrupt(2), pul1, LOW); //interrupcion1
+  lcd.begin(16, 2); //inicia LCD
+  lcd.setCursor(0, 1);//Posición inicial de la lcd
+  Serial.println("Ingrese las vocales sin espacios para ordenarlas"); //Indica la forma de ingreso
+}
+
+void loop() {
+
+}
+
+void pul1 () {
+
+  if (Serial.available() > 0) { //Comprueba que hay datos disponibles
+    vocales = Serial.readString(); //Almacena los datos en un string
+    longitud = vocales.length(); // longitud de lo ingresado
+
+    //Recorre todo el string
+    for (int i = 0; i < longitud; i++) {
+      temp = vocales.substring(0 + i, i + 1);
+
+      // busca cada caracter del string y lo clasifica
+      if (A.equals(temp)){
+       pos1 = pos1 + "a";
+      } else if ( E.equals(temp)){
+         pos2 = pos2 + "e";
+      } else if ( I.equals(temp)){
+         pos3 = pos3 + "i";
+      } else if ( O.equals(temp)){
+         pos4 = pos4 + "o";
+      } else if ( U.equals(temp)){
+         pos5 = pos5 + "u";
+      }
+      
+    }
+
+    // Presenta el resultado en LCD
+      lcd.setCursor(0, 1); //posicion de la LCD
+      lcd.print("                "); //Borra lo actual
+      lcd.setCursor(0, 1); //posicion de la LCD
+      lcd.print(pos1+pos2+pos3+pos4+pos5); //muestra el mensaje ordenado
+  
+  }
+}
