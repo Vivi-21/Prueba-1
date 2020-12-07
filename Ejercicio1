@@ -1,0 +1,68 @@
+String moneda1;
+String moneda2;
+int busqueda = 0;
+float conv1;
+float conv2;
+float mon1;
+float mon2;
+int i = 0;
+int j = 0;
+void setup() {
+  Serial.begin(9600);
+  attachInterrupt(digitalPinToInterrupt(2), pul1, LOW); //Interrupción 1
+  attachInterrupt(digitalPinToInterrupt(3), pul2, LOW ); //Interrupción 2
+  Serial.println("Ingrese los dos valores separados por -"); //Indica la forma de ingreso
+}
+
+void loop() {
+
+
+}
+
+void pul1 () {
+  i++;
+  if (i == 1) {
+    if (Serial.available() > 0) { //Comprueba que hay datos disponibles
+      moneda1 = Serial.readString(); //Almacena los datos en un float
+      busqueda = moneda1.indexOf("-"); //obtiene le indice para separar los valores
+      moneda2 = moneda1.substring(busqueda, (moneda1.length() - 1)); //separa 1
+      moneda1 = moneda1.substring(0, busqueda); // Separa 2
+      conv1 = moneda1.toFloat(); //Convierte el string a float
+      mon1 = conv1;
+      conv1 = conv1 * 4197.82; //conversión de euro a peso colombiano
+
+      Serial.println("Peso Col: " + String(conv1) + "\n"); //Imprime fila 1
+      Serial.println("Dolar: " + String(moneda2) + "\n"); //Imprime fila 2
+    }
+  } else if (i == 2) {
+      conv1 = mon1 * 98.99; //conversión de euro a peso colombiano
+
+      Serial.println("Peso Arg: " + String(conv1) + "\n"); //Imprime fila 1
+      Serial.println("Dolar: " + String(moneda2) + "\n"); //Imprime fila 2
+
+  }
+}
+
+void pul2 () {
+  j++;
+  if (j == 1) {
+    if (Serial.available() > 0) { //Comprueba que hay datos disponibles
+      moneda1 = Serial.readString(); //Almacena los datos en un float
+      busqueda = moneda1.indexOf("-");
+      moneda2 = moneda1.substring(busqueda, (moneda1.length() - 1));
+      moneda1 = moneda1.substring(0, busqueda);
+      conv2 = moneda2.toFloat();
+      mon2 = conv2;
+      conv2 = conv2 * 0.89; //conversión de dolar a franco suizo
+
+      Serial.println("Peso Col: " + String(conv1) + "\n"); //Indica la forma de ingreso
+      Serial.println("Dolar: " + String(moneda2) + "\n"); //Indica la forma de ingreso
+    }
+  } else if (j == 2) {
+      conv2 = mon2 * 5.11; //conversión de dolar a franco suizo
+
+      Serial.println("Peso Col: " + String(conv1) + "\n"); //Indica la forma de ingreso
+      Serial.println("Dolar: " + String(moneda2) + "\n"); //Indica la forma de ingreso
+
+  }
+}
