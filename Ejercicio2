@@ -1,0 +1,154 @@
+#include <LiquidCrystal.h> //Librería LCD
+//LCD
+LiquidCrystal lcd (13, 12, 11, 10, 9, 8); // RS,E,D4,D5,D6,D7
+String morse; // almacena el mensaje en morse completo
+String morse1; //almacena partes del morse
+String morse2; //almacena el caracter a traducir
+int separador;
+// Caracteres de morse
+String A = ".-";
+String B = "-...";
+String C = "-.-.";
+String D = "-..";
+String E = ".";
+String F = "..-.";
+String G = "--.";
+String H = "....";
+String I = "..";
+String J = ".---";
+String K = "-.-";
+String L = ".-..";
+String M = "--";
+String N = "-.";
+String O = "---";
+String P = ".--.";
+String Q = "--.-";
+String R = ".-.";
+String S = "...";
+String T = "-";
+String U = "..-";
+String V = "...-";
+String W = ".--";
+String X = "-..-";
+String Y = "-.--";
+String Z = "--..";
+String cero = "-----";
+String uno = ".----";
+String dos = "..---";
+String tres = "...--";
+String cuatro = "....-";
+String cinco = ".....";
+String seis = "-....";
+String siete = "--...";
+String ocho = "---..";
+String nueve = "....-";
+
+String palabra; // contiene el mensaje completo
+
+void setup() {
+  Serial.begin(9600);
+  attachInterrupt(digitalPinToInterrupt(2), pul1, LOW); //Interrupción 1
+  lcd.begin(16, 2); //Inicia LCD 16X2
+  lcd.setCursor(0, 1); //Posición inicial en el LCD
+  Serial.println("Ingrese el mensaje en morse, separado por * sin espacios, use . y -"); //Indica la forma de ingreso
+}
+
+void loop() {
+  
+}
+
+void pul1 () {
+
+  if (Serial.available() > 0) { //Comprueba que hay datos disponibles
+    morse = Serial.readString(); //Almacena los datos en un string
+
+    do {
+      separador = morse.indexOf("*"); //obtiene le indice para separar los valores
+      morse1 = morse.substring((separador + 1), (morse.length())); //recorta el mensaje completo
+      morse2 = morse.substring(0, separador); //caracter a traducir actualmente
+      morse = morse1;
+
+      // Conversion de morse
+      if (morse2.equals(A)) {
+        palabra = palabra + "A";
+      } else if (morse2.equals(B)) {
+        palabra = palabra + "B";
+      } else if (morse2.equals(C)) {
+        palabra = palabra + "C";
+      } else if (morse2.equals(D)) {
+        palabra = palabra + "D";
+      } else if (morse2.equals(E)) {
+        palabra = palabra + "E";
+      } else if (morse2.equals(F)) {
+        palabra = palabra + "F";
+      } else if (morse2.equals(G)) {
+        palabra = palabra + "G";
+      } else if (morse2.equals(H)) {
+        palabra = palabra + "H";
+      } else if (morse2.equals(I)) {
+        palabra = palabra + "I";
+      } else if (morse2.equals(J)) {
+        palabra = palabra + "J";
+      } else if (morse2.equals(K)) {
+        palabra = palabra + "K";
+      } else if (morse2.equals(L)) {
+        palabra = palabra + "L";
+      } else if (morse2.equals(M)) {
+        palabra = palabra + "M";
+      } else if (morse2.equals(N)) {
+        palabra = palabra + "N";
+      } else if (morse2.equals(O)) {
+        palabra = palabra + "O";
+      } else if (morse2.equals(P)) {
+        palabra = palabra + "P";
+      } else if (morse2.equals(Q)) {
+        palabra = palabra + "Q";
+      } else if (morse2.equals(R)) {
+        palabra = palabra + "R";
+      } else if (morse2.equals(S)) {
+        palabra = palabra + "S";
+      } else if (morse2.equals(T)) {
+        palabra = palabra + "T";
+      } else if (morse2.equals(U)) {
+        palabra = palabra + "U";
+      } else if (morse2.equals(V)) {
+        palabra = palabra + "V";
+      } else if (morse2.equals(W)) {
+        palabra = palabra + "W";
+      } else if (morse2.equals(X)) {
+        palabra = palabra + "X";
+      } else if (morse2.equals(Y)) {
+        palabra = palabra + "Y";
+      } else if (morse2.equals(Z)) {
+        palabra = palabra + "Z";
+      } else if (morse2.equals(uno)) {
+        palabra = palabra + "1";
+      } else if (morse2.equals(dos)) {
+        palabra = palabra + "2";
+      } else if (morse2.equals(tres)) {
+        palabra = palabra + "3";
+      } else if (morse2.equals(cuatro)) {
+        palabra = palabra + "4";
+      } else if (morse2.equals(cinco)) {
+        palabra = palabra + "5";
+      } else if (morse2.equals(seis)) {
+        palabra = palabra + "6";
+      } else if (morse2.equals(siete)) {
+        palabra = palabra + "7";
+      } else if (morse2.equals(ocho)) {
+        palabra = palabra + "8";
+      } else if (morse2.equals(nueve)) {
+        palabra = palabra + "9";
+      } else if (morse2.equals(cero)) {
+        palabra = palabra + "0";
+      }
+      
+    } while (separador != -1);
+
+    // mostrar por pantalla LCD
+      lcd.setCursor(0, 1); //posicion de la LCD
+      lcd.print("                "); //Borra lo actual
+      lcd.setCursor(0, 1); //posicion de la LCD
+      lcd.print(palabra); //muestra la traducción de Morse
+  }
+}
